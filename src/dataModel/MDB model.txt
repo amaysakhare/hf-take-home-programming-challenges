@@ -1,0 +1,215 @@
+db.createCollection("ingrdts", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "name", "unit", "indelivery" ],
+         properties: {
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            unit: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            indelivery: {
+			   bsonType: "bool",
+               description: "can only be one true or false and is required"
+            }
+		}
+	}
+}
+})
+
+var bulk = db.ingrdts.initializeUnorderedBulkOp();
+bulk.insert( { _id: "garlic", name: "garlic", unit: "clove", indelivery: true } );
+bulk.insert( { _id: "makrut lime leaves", name: "makrut lime leaves", unit: "leaves", indelivery: true} );
+bulk.insert( { _id: "carrot", name: "carrot", unit: "", indelivery: true } );
+bulk.insert( { _id: "capsicum", name: "capsicum", unit: "", indelivery: true } );
+bulk.insert( { _id: "Asian greens", name: "Asian greens", unit: "bunch", indelivery: true } );
+bulk.insert( { _id: "chicken tenderloins", name: "chicken tenderloins", unit: "packet", indelivery: true } );
+bulk.insert( { _id: "Southeast Asian Spice Blend", name: "Southeast Asian Spice Blend", unit: "sachet", indelivery: true } );
+bulk.insert( { _id: "coconut milk", name: "coconut milk", unit: "tin", indelivery: true } );
+bulk.insert( { _id: "udon noodles", name: "udon noodles(ContainsGluten)", unit: "packet", indelivery: true } );
+bulk.insert( { _id: "coriander", name: "coriander", unit: "bag", indelivery: true } );
+bulk.insert( { _id: "crushed peanuts", name: "crushed peanuts(ContainsPeanutsMay be present Tree Nuts, Gluten, Milk, Sesame, Soy)", unit: "packet", indelivery: true } );
+bulk.insert( { _id: "olive oil", name: "olive oil", unit: "", indelivery: false } );
+bulk.insert( { _id: "water", name: "water", unit: "cup", indelivery: false } );
+bulk.insert( { _id: "soy sauce", name: "soy sauce(ContainsGluten, Soy)", unit: "tbs", indelivery: false } );
+bulk.insert( { _id: "brown sugar", name: "brown sugar", unit: "tsp", indelivery: false } );
+bulk.execute();
+
+db.ingrdts.createIndex( { name: 1}, {unique:true} )
+
+db.createCollection("nutrntinfo", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "name", "unit"],
+         properties: {
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            unit: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            }
+		}
+	}
+}
+})
+
+
+var bulk = db.nutrntinfo.initializeUnorderedBulkOp();
+bulk.insert( { _id: "Energy ", name: "Energy ", unit: "kJ" } );
+bulk.insert( { _id: "Fat ", name: "Fat ", unit: "g" } );
+bulk.insert( { _id: "of which saturates ", name: "of which saturates ", unit: "g" } );
+bulk.insert( { _id: "Carbohydrate ", name: "Carbohydrate ", unit: "g" } );
+bulk.insert( { _id: "of which sugars ", name: "of which sugars ", unit: "g" } );
+bulk.insert( { _id: "Dietary Fibre ", name: "Dietary Fibre ", unit: "g" } );
+bulk.insert( { _id: "Protein ", name: "Protein ", unit: "g" } );
+bulk.insert( { _id: "Cholesterol ", name: "Cholesterol ", unit: "mg" } );
+bulk.insert( { _id: "Sodium ", name: "Sodium ", unit: "mg" } );
+bulk.execute();
+
+db.nutrntinfo.createIndex( { name: 1}, {unique:true} )
+
+db.createCollection("utensils", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "name" ],
+         properties: {
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            }
+		}
+	}
+}
+})
+
+var bulk = db.utensils.initializeUnorderedBulkOp();
+bulk.insert( { _id: "Large Non-Stick Pan", name: "Large Non-Stick Pan" } );
+
+bulk.execute();
+
+db.utensils.createIndex( { name: 1}, {unique:true} )
+
+db.createCollection("tags", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "name" ],
+         properties: {
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            }
+		}
+	}
+}
+})
+
+var bulk = db.tags.initializeUnorderedBulkOp();
+bulk.insert( { _id: "Kids friendly", name: "Kids friendly" } );
+
+bulk.execute();
+
+db.tags.createIndex( { name: 1}, {unique:true} )
+
+db.createCollection("allergens", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "name" ],
+         properties: {
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            }
+		}
+	}
+}
+})
+
+var bulk = db.allergens.initializeUnorderedBulkOp();
+bulk.insert( { _id: "Gluten", name: "Gluten" } );
+bulk.insert( { _id: "Soy", name: "Soy" } );
+bulk.insert( { _id: "Peanuts", name: "Peanuts" } );
+
+bulk.execute();
+
+db.allergens.createIndex( { name: 1}, {unique:true} )
+
+
+db.createCollection("classification", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         required: [ "name" ],
+         properties: {
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            }
+		}
+	}
+}
+})
+
+var bulk = db.classification.initializeUnorderedBulkOp();
+bulk.insert( { _id: "Quick & Easy", name: "Quick & Easy" } );
+
+
+bulk.execute();
+
+db.classification.createIndex( { name: 1}, {unique:true} )
+
+db.createCollection("reviews", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         properties: {
+            review: {
+                bsonType: ["array"],
+                minItems: 0,
+                uniqueItems: false,
+                additionalProperties: false,
+                items: {
+                    bsonType: ["object"],
+                    additionalProperties: false,
+                    description: "'items' must contain the stated fields.",
+                    properties: {
+                        star: {
+                          enum: ["1", "2", "3", "4", "5"],
+                          description: "star rating"
+                                },
+                        text: {
+                          bsonType: "string",
+                          description: "customer review"
+                                },
+						reviewer: {
+                          bsonType: "string",
+                          description: "reviewer name"
+                                }
+                    }
+                }
+            },
+			rrecipe: {
+                          bsonType: "string",
+                          description: "name of the reviewed recipe"
+                                }
+		}
+	}
+}
+})
+
+
+var bulk = db.reviews.initializeUnorderedBulkOp();
+bulk.insert( { _id: "Southeast Asian Chicken Coconut Soup", rrecipe:"Southeast Asian Chicken Coconut Soup", review:[{star:"4", text:"very easy to cook", reviewer:"John X"}]});
+bulk.insert( { _id: "weekly menu 1", rrecipe:"weekly menu 1", review:[{star:"4", text:"very easy to cook", reviewer:"John X"}]});
+
+bulk.execute();
+

@@ -1,0 +1,186 @@
+db.createCollection("wmenu", {
+   validator: {
+      $jsonSchema: {
+         bsonType: "object",
+         properties: {
+		 recipe: {
+               bsonType: "object",
+			   required: [ "_id", "name", "ingrdts", "nutrntinfo", "classification", "metadata", "utensils", "instr" ],
+               properties: {
+		    _id: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            name: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+            instr: {
+               bsonType: "string",
+               description: "must be a string and is required"
+            },
+			ingredients: {
+			   bsonType: ["array"],
+                minItems: 0,
+                uniqueItems: false,
+                additionalProperties: false,
+                items: {
+                    bsonType: ["object"],
+                    additionalProperties: false,
+                    description: "'items' must contain the stated fields.",
+                    properties: {
+                        ingrdts: {
+                          bsonType: "object",
+                          description: "must be an object if the field exists"
+                                },
+						qty: {
+                          bsonType: "int",
+                          description: "qnty"
+                                }
+                    }
+                }
+               
+            },
+			nutrnts: {
+			   bsonType: ["array"],
+                minItems: 0,
+                uniqueItems: false,
+                additionalProperties: false,
+                items: {
+                    bsonType: ["object"],
+                    additionalProperties: false,
+                    description: "'items' must contain the stated fields.",
+                    properties: {
+                        nutrntinfo: {
+                          bsonType: "object",
+                          description: "must be an object if the field exists"
+                                },
+						val: {
+                          bsonType: "decimal",
+                          description: "qnty"
+                                }
+                    }
+                }
+               
+            },
+			classification: {
+               bsonType: ["array"],
+			   minItems: 0,
+			   description: "must be an object if the field exists",
+			   items: {
+                    bsonType: ["string"]
+					}
+            },
+			utensils: {
+               bsonType: ["array"],
+			   minItems: 0,
+			   description: "must be an object if the field exists",
+			   items: {
+                    bsonType: ["string"]
+					}
+            },
+            metadata: {
+               bsonType: "object",
+               properties: {
+                  preptime: {
+                     bsonType: "string",
+                     description: "must be a string if the field exists"
+                  },
+                  cookingdifficulty: {
+                     bsonType: "string",
+                     description: "must be a string and is required"
+                  },
+				  tags: {
+                     bsonType: ["array"],
+					 minItems: 0,
+					 description: "must be an object if the field exists",
+					 items: {
+                    bsonType: ["string"]
+					}
+                  },
+				  allergens: {
+                     bsonType: ["array"],
+					 minItems: 0,
+					 description: "must be an object if the field exists",
+					 items: {
+                    bsonType: ["string"]
+					}
+                  },
+				  reviews: {
+               bsonType: ["array"],
+                minItems: 0,
+                uniqueItems: false,
+                additionalProperties: false,
+                items: {
+                    bsonType: ["object"],
+                    additionalProperties: false,
+                    description: "'items' must contain the stated fields.",
+                    properties: {
+                        star: {
+                          enum: ["1", "2", "3", "4", "5"],
+                          description: "star rating"
+                                },
+                        text: {
+                          bsonType: "string",
+                          description: "customer review"
+                                },
+						reviewer: {
+                          bsonType: "string",
+                          description: "reviewer name"
+                                }
+                    }
+                }
+            }
+               }
+            }
+         }
+      },
+	  reviews: {
+	           bsonType: ["array"],
+                minItems: 0,
+                uniqueItems: false,
+                additionalProperties: false,
+                items: {
+                    bsonType: ["object"],
+                    additionalProperties: false,
+                    description: "'items' must contain the stated fields.",
+                    properties: {
+                        star: {
+                          enum: ["1", "2", "3", "4", "5"],
+                          description: "star rating"
+                                },
+                        text: {
+                          bsonType: "string",
+                          description: "customer review"
+                                },
+						reviewer: {
+                          bsonType: "string",
+                          description: "reviewer name"
+                                }
+                    }
+                }
+              
+            },
+	  _id: {
+               bsonType: "string",
+			   description: "must be an string if the field exists"
+            }
+   }
+   }
+}})
+
+
+db.createCollection("wmenu")
+
+test data:
+===============
+
+var bulk = db.wmenu.initializeUnorderedBulkOp();
+bulk.insert( {_id: "Southeast Asian Chicken Coconut Soup", recipe:{name: "Southeast Asian Chicken Coconut Soup", instr:"1 do this 2 do that", ingredients: [ {ingrdts:"garlic", qty:2},{ingrdts:"carrot", qty:1},{ingrdts:"capsicum",qty:1},{ingrdts:"Asian greens",qty:1}], nutrnts: [{nutrntinfo:"Energy", val:4316}, {nutrntinfo:"Fat",val:53.5}], classification: ["Quick & Easy"],utensils: ["Large Non-Stick Pan","spoon"], metadata:{preptime:"35 minutes",	 cookingdifficulty: "Easy", tags:["Kids friendly"], allergens:["Gluten", "Soy", "Peanuts"], reviews:{ rrecipe:"Southeast Asian Chicken Coconut Soup",review:[{star:"4", text:"very easy to cook", reviewer:"John X"}]} }}, reviews:{ rrecipe:"Weekly menu 1",review:[{star:"4", text:"very easy to cook", reviewer:"John X"}]}} );
+
+
+bulk.execute();
+
+db.wmenu.createIndex( { name: 1}, {unique:true} )
+
+
